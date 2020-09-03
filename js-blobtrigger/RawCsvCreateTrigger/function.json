@@ -1,0 +1,12 @@
+{
+  "bindings": [
+    {
+      "name": "myBlob",
+      "type": "blobTrigger",
+      "direction": "in",
+      "path": "raw/2020/{name}.csv",
+      "connection": "BlobStorage"
+    }
+  ],
+  "scriptFile": "../dist/RawCsvCreateTrigger/index.js"
+}
