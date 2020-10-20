@@ -1,7 +1,7 @@
 import os
 import sys
 import json
-from random import randrange
+from random import randrange, randint
 from azure.storage.queue import (QueueClient, TextBase64EncodePolicy)
 
 
@@ -18,13 +18,17 @@ try:
 
     for count in range(0, int(sys.argv[1])):
         msg_body = {
-            "party": parties[randrange(0, 3)],
-            "count": randrange(1, 25),
-            "electoralPlace": places[randrange(0, 3)],
-            "electoralUnit": regions[randrange(0, 3)]
+            "party": parties[randint(0, 3)],
+            "count": randint(1, 25),
+            "electoralPlace": places[randint(0, 3)],
+            "electoralUnit": regions[randint(0, 3)]
         }
 
         queue.send_message(json.dumps(msg_body))
+
+        print("Message {} has been sent successfully".format(count))
+    
+    print("Votes have been submited")
 
 except KeyError:
     print('Error: missing environment variable QUEUE_STORAGE or QUEUE_NAME, or something went wrong')

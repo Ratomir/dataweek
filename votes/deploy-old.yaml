@@ -1,0 +1,74 @@
+data:
+  FUNCTIONS_WORKER_RUNTIME: cHl0aG9u
+  AzureWebJobsStorage: XXX=
+  QueueStorage: XXX==
+  TableStorage: XXX
+apiVersion: v1
+kind: Secret
+metadata:
+  name: votes
+  namespace: default
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: votes
+  namespace: default
+  labels:
+    app: votes
+spec:
+  selector:
+    matchLabels:
+      app: votes
+  template:
+    metadata:
+      labels:
+        app: votes
+    spec:
+      containers:
+      - name: votes
+        image: acrdataweek.azurecr.io/votes
+        env:
+        - name: AzureFunctionsJobHost__functions__0
+          value: VotesTrigger
+        envFrom:
+        - secretRef:
+            name: votes
+        resources:
+            requests:
+              cpu: "0.5"
+              memory: "1G"
+      nodeSelector:
+        kubernetes.io/role: agent
+        beta.kubernetes.io/os: linux
+        type: virtual-kubelet
+      tolerations:
+        - key: virtual-kubelet.io/provider
+          operator: Exists
+      imagePullSecrets:
+        - name: acr-secret
+---
+apiVersion: keda.k8s.io/v1alpha1
+kind: ScaledObject
+metadata:
+  name: votes
+  namespace: default
+  labels:
+    deploymentName: votes
+spec:
+  scaleTargetRef:
+    deploymentName: votes
+  pollingInterval: 5 # Optional. Default: 30 seconds
+  cooldownPeriod: 30 # Optional. Default: 300 seconds
+  minReplicaCount: 1 # Optional, Default 0
+  maxReplicaCount: 30 # Optional. Default: 100
+  triggers:
+  - type: azure-queue
+    metadata:
+      name: msg
+      type: queueTrigger
+      direction: in
+      queueName: in-votes
+      connection: QueueStorage
+---
+

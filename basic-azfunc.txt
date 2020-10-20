@@ -1,0 +1,24 @@
+-------------------------------------
+npm install -g azure-functions-core-tools
+
+func init
+	func init LocalFunctionsProject --worker-runtime dotnet
+	
+func new
+func function create 
+	func new --name HttpExample --template "HTTP trigger"
+func start
+func start -p 7072 hr
+func start -p 7075 management
+func start -p 
+-------------------------------------
+virtualenv venv
+.\venv\Scripts\activate
+-------------------------------------
+func docker
+func init --docker
+docker build -t azfunctiondemo .
+docker run -d -p 9999:80 azfunctiondemo
+
+
+@Microsoft.KeyVault(SecretUri=https://azfuncmistralkeyvault.vault.azure.net/secrets/queueconnstring/f944e49337ee4a939a875b44d973987c)

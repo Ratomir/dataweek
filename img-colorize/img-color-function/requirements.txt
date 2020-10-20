@@ -1,0 +1,4 @@
+azure-functions
+numpy
+opencv-python-headless
+azure-storage-blob

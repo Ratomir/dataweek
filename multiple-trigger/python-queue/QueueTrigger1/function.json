@@ -1,0 +1,12 @@
+{
+  "scriptFile": "__init__.py",
+  "bindings": [
+    {
+      "name": "msg",
+      "type": "queueTrigger",
+      "direction": "in",
+      "queueName": "in-hellokeda-multiple-1",
+      "connection": "QueueStorage"
+    }
+  ]
+}

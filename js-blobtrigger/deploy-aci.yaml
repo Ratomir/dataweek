@@ -1,11 +1,11 @@
 api-version: 2019-12-01
 location: northeurope
-name: aci-dataweek
+name: aci-mscommunity20
 properties:
   containers:
   - name: api
     properties:
-      image: xxx.azurecr.io/blob-node-trigger:latest
+      image: mscommunity20.azurecr.io/blob-node-trigger:latest
       ports:
       - port: 443
         protocol: TCP
@@ -18,17 +18,17 @@ properties:
         value: "XXX"
       resources:
         requests:
-          cpu: 1.0
-          memoryInGB: 2
+          cpu: 0.5
+          memoryInGB: 1
   imageRegistryCredentials: # Credentials to pull a private image
-    - server: xxx.azurecr.io
+    - server: mscommunity20.azurecr.io
       username: XXX
       password: XXX
   ipAddress:
     ports:
     - port: 443
       protocol: TCP
-    dnsNameLabel: aci-dataweek
+    dnsNameLabel: aci-mscommunity20
     type: Public
   osType: Linux
 tags: null
